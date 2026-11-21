@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: '0 4 * * 1'
   workflow_dispatch:
+  push:
+    branches: [test/878-published-images]
   pull_request:
     paths:
       - 'benchmarks/sqlmap/**'
@@ -45,7 +47,7 @@ jobs:
           test "$(cat "$log")" = 'dummy success'
 
   sqlmap-benchmark:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     needs: report-tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
